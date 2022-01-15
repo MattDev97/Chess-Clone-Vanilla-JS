@@ -1,0 +1,37 @@
+.chess-pieces > * {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+
+	cursor: grab;
+}
+
+.chess-board {
+	position: relative;
+	width: fit-content;
+}
+
+.row {
+	display: flex;
+}
+
+.square {
+	width: 100px;
+	height: 100px;
+}
+
+.square.drag-over {
+	background-color: red !important;
+}
+
+.square.white {
+	background-color: whitesmoke;
+}
+
+.square.black {
+	background-color: #601f1f;
+}
+
+body {
+	background-color: rgb(1, 1, 75);
+}
