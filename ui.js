@@ -12,30 +12,31 @@ export function drawSquare(color, coordinate) {
 }
 
 export function drawChessPiece(chessPiece) {
-    let pieceElement = document.createElement('img');
-    let svgSrc = './lib/' + chessPiece.color + '_' + chessPiece.type + '.svg';
+	let pieceElement = document.createElement('img');
+	let svgSrc = './lib/' + chessPiece.color + '_' + chessPiece.type + '.svg';
 
-    pieceElement.src = svgSrc;
-    pieceElement.setAttribute('type', chessPiece.type);
-    pieceElement.setAttribute('color', chessPiece.color);
-    movePiece(pieceElement, chessPiece.coord);
+	pieceElement.src = svgSrc;
+	pieceElement.setAttribute('type', chessPiece.type);
+	pieceElement.setAttribute('color', chessPiece.color);
+
+	movePiece(pieceElement, chessPiece.coord, false);
 
 	attachChessPieceDragEvents(pieceElement);
 
-    return pieceElement;
+	return pieceElement;
 }
 
 function attachSquareDragEvents(square) {
-    square.addEventListener('drop', function (event) {
+	square.addEventListener('drop', function (event) {
 		let element = event.target;
 		element.classList.remove('drag-over');
 
-        let originCoords = selectedChessPiece.attributes['coords'].value;
+		let originCoords = selectedChessPiece.attributes['coords'].value;
 		let destinationCoords = element.attributes['data-coord'].value;
 
-		if(isMoveValid(originCoords, destinationCoords, selectedChessPiece, false)) {
-            movePiece(selectedChessPiece, destinationCoords);
-        }
+		if (isMoveValid(originCoords, destinationCoords, selectedChessPiece, false)) {
+			movePiece(selectedChessPiece, destinationCoords, true);
+		}
 	});
 
 	square.addEventListener('dragenter', function (event) {
@@ -56,37 +57,42 @@ function attachSquareDragEvents(square) {
 }
 
 function attachChessPieceDragEvents(pieceElement) {
-    pieceElement.addEventListener('dragstart', function (event) {
-        selectedChessPiece = event.target;
-    });
+	pieceElement.addEventListener('dragstart', function (event) {
+		selectedChessPiece = event.target;
+	});
 
-    pieceElement.addEventListener('drop', function (event) {
-        event.preventDefault();
-        let capturedPiece = event.target;
+	pieceElement.addEventListener('drop', function (event) {
+		event.preventDefault();
+		let capturedPiece = event.target;
 
-        let selectedPieceColor = selectedChessPiece.attributes['color'].value;
-        let selectedPieceCoords = selectedChessPiece.attributes['coords'].value;
+		let selectedPieceColor = selectedChessPiece.attributes['color'].value;
+		let selectedPieceCoords = selectedChessPiece.attributes['coords'].value;
 
-        let capturedPieceColor = capturedPiece.attributes['color'].value;
-        let capturedPieceCoords = capturedPiece.attributes['coords'].value;
+		let capturedPieceColor = capturedPiece.attributes['color'].value;
+		let capturedPieceCoords = capturedPiece.attributes['coords'].value;
 
-        if (capturedPieceColor != selectedPieceColor
-            && capturedPieceCoords != selectedPieceCoords) {
+		if (capturedPieceColor != selectedPieceColor
+			&& capturedPieceCoords != selectedPieceCoords) {
 
-            if (isMoveValid(selectedPieceCoords, capturedPieceCoords, selectedChessPiece, true)) {
-                capturedPiece.remove();
-                movePiece(selectedChessPiece, capturedPieceCoords);
-            }
-        }
-    })
+			if (isMoveValid(selectedPieceCoords, capturedPieceCoords, selectedChessPiece, true)) {
+				capturedPiece.remove();
+				movePiece(selectedChessPiece, capturedPieceCoords, true);
+			}
+		}
+	})
 
-    pieceElement.addEventListener('dragover', function (event) {
-        event.preventDefault();
-    })
+	pieceElement.addEventListener('dragover', function (event) {
+		event.preventDefault();
+	})
 }
 
-function movePiece(element, destinationCoords) {
+function movePiece(element, destinationCoords, hasMoved) {
 	element.setAttribute('coords', destinationCoords);
+
+	if (hasMoved) {
+		element.setAttribute('hasmoved', hasMoved);
+	}
+
 
 	let x = alphabet.indexOf(destinationCoords.split('')[0]) * 100;
 	let y = (destinationCoords.split('')[1] - 1) * 100;
