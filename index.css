@@ -7,8 +7,11 @@
 }
 
 .chess-board {
+	border: 1px outset #5a6881;
+
 	position: relative;
 	width: fit-content;
+	margin: auto;
 }
 
 .row {
@@ -25,13 +28,13 @@
 }
 
 .square.white {
-	background-color: whitesmoke;
+	background-color: #687388;
 }
 
 .square.black {
-	background-color: #601f1f;
+	background-color: #2c323f;
 }
 
 body {
-	background-color: rgb(1, 1, 75);
+	background-color: #192331;
 }
