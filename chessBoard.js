@@ -1,5 +1,31 @@
 import { drawSquare, drawChessPiece } from './ui.js';
 
+class Piece {
+	constructor(type, coords) {
+		this.type = type;
+		this.coords = coords;
+		this.hasMoved = false;
+	}
+}
+
+// Singleton
+class ChessBoard {
+	pieces = [];
+
+	constructor(pieces, side) {
+		this.drawBoard(side);
+		this.setStartingPositions(pieces);
+	}
+
+	drawBoard() {
+		
+	}
+
+	setStartingPositions(pieces) {
+
+	}
+}
+
 export function drawChessBoard(side) {
     let chessMatrix = [[]];
 	side = 1; // 0: black - 1: white
